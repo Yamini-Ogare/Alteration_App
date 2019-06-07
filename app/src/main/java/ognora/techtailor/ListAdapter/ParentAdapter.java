@@ -1,8 +1,6 @@
 package ognora.techtailor.ListAdapter;
 
 import android.arch.lifecycle.LifecycleOwner;
-import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.Observer;
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -25,8 +23,7 @@ import ognora.techtailor.View.MainActivity;
 public class ParentAdapter extends RecyclerView.Adapter<ParentAdapter.MyViewHolder > {
 
     ArrayList<CategoryModel> arrayList ;
-    ArrayList<ProductModel> productarray= new ArrayList<>();
-   // ArrayList<ProductModel> ar = new ArrayList<>();
+    ArrayList<ProductModel> productarray = new ArrayList<>();
     Context context;
     ChildAdapter adapter;
 
@@ -49,17 +46,17 @@ public class ParentAdapter extends RecyclerView.Adapter<ParentAdapter.MyViewHold
 
         myViewHolder.categoryname.setText(arrayList.get(i).getName());
 
-
-        //((MainActivity)context).viewModel.getAllproduct(arrayList.get(i).getName());
-
         LinearLayoutManager layoutManager = new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL,false);
         myViewHolder.childrecycler.setLayoutManager(layoutManager);
         adapter = new ChildAdapter(productarray, context);
         myViewHolder.childrecycler.setAdapter(adapter);
 
+        //((MainActivity)context).viewModel.getAllproduct(arrayList.get(i).getName());
+
         ((MainActivity)context).viewModel.getAllproduct(arrayList.get(i).getName()).observe((MainActivity) context, new Observer<ArrayList<ProductModel>>() {
             @Override
             public void onChanged(@Nullable ArrayList<ProductModel> productModels) {
+
                 productarray.addAll(productModels);
                 adapter.notifyDataSetChanged();
             }
@@ -86,6 +83,8 @@ public class ParentAdapter extends RecyclerView.Adapter<ParentAdapter.MyViewHold
 
             categoryname = itemView.findViewById(R.id.categoryname);
             childrecycler = itemView.findViewById(R.id.childRecycler);
+
+
         }
     }
 }

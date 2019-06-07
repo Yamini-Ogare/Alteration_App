@@ -4,14 +4,17 @@ import android.app.Application;
 import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
+import android.content.Context;
 import android.support.annotation.NonNull;
 import android.util.Log;
+import android.view.View;
 
 import java.util.ArrayList;
 
 import ognora.techtailor.Data.Api;
 import ognora.techtailor.Model.CategoryModel;
 import ognora.techtailor.Model.ProductModel;
+import ognora.techtailor.View.MainActivity;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -20,13 +23,14 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivityViewModel extends AndroidViewModel {
 
-   public MutableLiveData<ArrayList<ProductModel>> arrayList;
-    MutableLiveData<ArrayList<CategoryModel>> categoryarrayList;
-    ArrayList<ProductModel> array = new ArrayList<>();
+     MutableLiveData<ArrayList<ProductModel>> arrayList;
+     MutableLiveData<ArrayList<CategoryModel>> categoryarrayList;
+     Context context;
 
 
     public MainActivityViewModel(@NonNull Application application) {
         super(application);
+        this.context = getApplication().getBaseContext();
     }
 
 
@@ -38,13 +42,14 @@ public class MainActivityViewModel extends AndroidViewModel {
         { arrayList = new MutableLiveData<>();
             //we will load it asynchronously from server in this method
             loadProducts(categoryname);
-        } else if(arrayList.getValue().get(arrayList.getValue().size()).getGender()!=categoryname)
-             loadProducts(categoryname);
+        }
 
         return arrayList;
     }
 
     private void loadProducts(final String categoryname) {
+
+     //   ((MainActivity)context).progressBar.setVisibility(View.VISIBLE);
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(Api.BASE_URL)
@@ -52,18 +57,15 @@ public class MainActivityViewModel extends AndroidViewModel {
                 .build();
 
         Api api = retrofit.create(Api.class);
-        Call<ArrayList<ProductModel>> call = api.getAllProduct();
+        Call<ArrayList<ProductModel>> call = api.getAllProduct(categoryname);
 
         call.enqueue(new Callback<ArrayList<ProductModel>>() {
             @Override
             public void onResponse(Call<ArrayList<ProductModel>> call, Response<ArrayList<ProductModel>> response) {
+                 arrayList.setValue(response.body());
+            //    ((MainActivity)context).progressBar.setVisibility(View.GONE);
 
-                for (ProductModel pro : response.body()) {
-                        if(pro.getGender()==categoryname)
-                            array.add(pro);
-                }
 
-                arrayList.setValue(array);
             }
 
             @Override
@@ -74,6 +76,8 @@ public class MainActivityViewModel extends AndroidViewModel {
         });
     }
 
+
+    // to get the number of categories
 
 
     public LiveData<ArrayList<CategoryModel>> getAllcategories(){

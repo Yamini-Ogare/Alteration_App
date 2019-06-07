@@ -2,13 +2,13 @@ package ognora.techtailor.Model;
 
 public class ProductModel {
     String _id;
-  String name;
   String image_url;
   String service_type;
   String description;
-  float price;
+  float alteration_price;
   String gender ;
   boolean is_available;
+  String category;
 
     public ProductModel() {
     }
@@ -19,14 +19,6 @@ public class ProductModel {
 
     public void set_id(String _id) {
         this._id = _id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public String getImage_url() {
@@ -53,12 +45,12 @@ public class ProductModel {
         this.description = description;
     }
 
-    public float getPrice() {
-        return price;
+    public float getAlteration_price() {
+        return alteration_price;
     }
 
-    public void setPrice(float price) {
-        this.price = price;
+    public void setAlteration_price(float alteration_price) {
+        this.alteration_price = alteration_price;
     }
 
     public String getGender() {
@@ -75,5 +67,13 @@ public class ProductModel {
 
     public void setIs_available(boolean is_available) {
         this.is_available = is_available;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
     }
 }

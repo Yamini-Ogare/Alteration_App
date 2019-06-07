@@ -7,6 +7,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
+import android.widget.ProgressBar;
 
 import java.util.ArrayList;
 
@@ -21,11 +23,10 @@ public class MainActivity extends AppCompatActivity {
 
     RecyclerView recyclerView;
     ParentAdapter adapter;
-  //  ChildAdapter childAdapter;
     ArrayList<CategoryModel> arrayList = new ArrayList<>();
-//    ArrayList<ProductModel> productarray = new ArrayList<>();
     public MainActivityViewModel viewModel ;
-    RecyclerView recyclerView2;
+    public ProgressBar progressBar ;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +34,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         recyclerView = findViewById(R.id.parentRecycler);
-        recyclerView2 = findViewById(R.id.childRecycler);
+        progressBar = findViewById(R.id.progress);
+        progressBar.setVisibility(View.VISIBLE);
 
         viewModel = ViewModelProviders.of(this).get(MainActivityViewModel.class);
 
@@ -50,6 +52,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+
+        progressBar.setVisibility(View.GONE);
 
         }
 
